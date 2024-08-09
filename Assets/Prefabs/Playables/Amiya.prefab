@@ -84,6 +84,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2739164711288884999}
+  - component: {fileID: 1024109425485425330}
   m_Layer: 6
   m_Name: Amiya
   m_TagString: Untagged
@@ -109,6 +110,28 @@ Transform:
   - {fileID: 6674953534734085112}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1024109425485425330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 275198952231043785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ee3dd9bd925c194c873be1b94838126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  position: 4
+  charStatus:
+    maxHp: 699
+    maxSp: 100
+    atk: 276
+    def: 48
+    atkSpeed: 1.6
+  blockableNumber: 1
+  requiredCost: 18
+  locatedCoolTime: 70
 --- !u!1 &713918485764393335
 GameObject:
   m_ObjectHideFlags: 0
@@ -660,6 +683,7 @@ GameObject:
   - component: {fileID: 2196473387845783242}
   - component: {fileID: 2549698435406496110}
   - component: {fileID: 1441107275747514373}
+  - component: {fileID: 6322765615884863507}
   m_Layer: 6
   m_Name: SkeletonMesh
   m_TagString: Untagged
@@ -814,6 +838,18 @@ MonoBehaviour:
   rigidBody2D: {fileID: 0}
   rigidBody: {fileID: 0}
   mecanimLayerFlags: -1
+--- !u!114 &6322765615884863507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4857346689747279226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b78e93bfe9332ae46a74639662ac0104, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5579785498558150371
 GameObject:
   m_ObjectHideFlags: 0
