@@ -43,6 +43,8 @@ public class StageController : MonoBehaviour
         
     }
 
+    // stage에 할당된 캐릭터 및 UI 초기화
+    // 게임 시작 후 1번만 실행
     private void InitStage()
     {
         characterControllers = new List<CharacterController>();

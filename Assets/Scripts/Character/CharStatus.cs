@@ -4,8 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class CharStatus 
+public class CharStatus
 {
+    [field: SerializeField] public CharClass Class { get; private set; }
+    [field: SerializeField] public AutoAttackType AutoAttackType { get; private set; }
+    
     // 초기값
     [SerializeField] private float maxHp;
     [SerializeField] private float maxSp;
