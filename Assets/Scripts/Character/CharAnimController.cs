@@ -11,4 +11,14 @@ public class CharAnimController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
+
+    public void SetTrigger(string name)
+    {
+        animator.SetTrigger(name);
+    }
+
+    public void SetBool(string name, bool value)
+    {
+        animator.SetBool(name, value);
+    }
 }

@@ -14,6 +14,7 @@ public enum CharClass
 
 public enum CharState
 {
+    Wait,
     Start,
     Idle,
     Attack,
@@ -30,13 +31,4 @@ public enum SkillType
 {
     Active,
     Passive,
-}
-
-public static class LocatedCoolTime
-{
-    public const float fast = 18f;
-    public const float medium_Merchant = 25f;
-    public const float medium_Agent = 35f;
-    public const float slow = 70f;
-    public const float slow_much = 200f;
 }

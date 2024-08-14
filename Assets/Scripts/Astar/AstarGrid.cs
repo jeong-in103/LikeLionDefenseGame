@@ -73,7 +73,7 @@ public class AstarGrid : MonoBehaviour
         }
     }
 
-    public void SetActiveNodes(AutoAttackType type, bool active)
+    public void SetActiveNodesByType(AutoAttackType type, bool active)
     {
         if (type == AutoAttackType.Melee)
         {
@@ -88,6 +88,18 @@ public class AstarGrid : MonoBehaviour
             {
                 node.gameObject.SetActive(active);
             }
+        }
+    }
+
+    public List<Node> GetNodesByType(AutoAttackType type)
+    {
+        if (type == AutoAttackType.Melee)
+        {
+            return WalkableNodes;
+        }
+        else
+        {
+            return WalkUnableNodes;
         }
     }
 }

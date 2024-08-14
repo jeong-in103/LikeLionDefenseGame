@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba249c35c01ecc4b9ebd9bdc2927820, type: 3}
+  m_Name: Amiya
+  m_EditorClassIdentifier: 
+  <CharProfileImage>k__BackingField: {fileID: -128023269, guid: e3f630f1496910d4e8d606493c3db0be, type: 3}
+  <Class>k__BackingField: 4
+  <AutoAttackType>k__BackingField: 1
+  maxHp: 0
+  maxSp: 0
+  atk: 0
+  def: 0
+  atkSpeed: 0
+  blockAbleNumber: 0
+  requiredCost: 0
+  locatedCoolTime: 0

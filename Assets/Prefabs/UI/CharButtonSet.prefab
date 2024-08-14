@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 6837494317567132963}
   - component: {fileID: 2270119860520323231}
   - component: {fileID: 592606282801577535}
-  - component: {fileID: 6139722922418785342}
+  - component: {fileID: 390565491341552719}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -296,7 +296,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6139722922418785342
+--- !u!114 &390565491341552719
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

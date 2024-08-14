@@ -9,32 +9,35 @@ using UnityEngine.UI;
 
 public class CharProfileButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+    private Button button;
     private Image charBtnIcon;
-    private CharacterController character;
-
-    public bool IsButtonDown { get; private set; }
+    
+    private UnityEvent onButtonDown;
+    private UnityEvent onButtonUp;
     
     private void Awake()
     {
-        charBtnIcon = GetComponent<Image>();
+        button = GetComponentInChildren<Button>();
+        charBtnIcon = button.gameObject.GetComponent<Image>();
+
+        onButtonDown = new UnityEvent();
+        onButtonUp = new UnityEvent();
     }
 
-    public void InitCharBtn(Sprite sprite, GameObject _character)
+    public void InitCharBtn(Sprite sprite, int id, UnityAction<int> action)
     {
         charBtnIcon.sprite = sprite;
-        character = _character.GetComponent<CharacterController>();
+        onButtonDown.AddListener(() => action(id));
+        onButtonUp.AddListener(() => gameObject.SetActive(false));
     }
-    
+
     public void OnPointerDown(PointerEventData eventData)
     {
-        IsButtonDown = true;
-        character.gameObject.SetActive(true);
-        character.StartCharacterPlaceInStage();
+        onButtonDown.Invoke();
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        IsButtonDown = false;
-        character.LocatedAtPos();
+        onButtonUp.Invoke();
     }
 }
