@@ -15,6 +15,8 @@ public class AstarGrid : MonoBehaviour
     [Header("Grid info")]
     [SerializeField] private int xSize; // 열
     [SerializeField] private int ySize; // 행
+    [SerializeField] private Node startNode;
+    [SerializeField] private Node endNode;
     [SerializeField] private Node[] nodes;
     
     private Node[,] grid;

@@ -15,6 +15,7 @@ public class CharacterController : MonoBehaviour
     private bool isLocated = false;
 
     private bool isRotating = false;
+    private bool isCanRotated = false;
     private bool isRotated = false;
     
     // 캐싱
@@ -24,33 +25,48 @@ public class CharacterController : MonoBehaviour
     {
         characterManager = GetComponent<CharacterManager>();
         mainCamera = Camera.main;
-        
+
+        characterManager.OnCharacterLocated.AddListener(Init);
         characterManager.OnCharacterLocated.AddListener(StartCharacterPlaceInStage);
+    }
+
+    private void Init()
+    {
+        isLocating = false;
+        isCanLocated = false;
+        isLocated = false;
+        isRotating = false;
+        isCanRotated = false;
+        isRotated = false;
     }
 
     private void Update()
     {
-        if (Input.GetMouseButton(0))
+        if (isLocating)
         {
-            if (isLocating && !isLocated)
+            if (Input.GetMouseButton(0))
             {
-                UpdateCharPosToCursor(gameObject);
+                if (!isLocated)
+                {
+                    UpdateCharPosToCursor(gameObject);
+                }
             }
-            
-            if (isRotating && !isRotated)
-            {
-                UpdateCharPosToCursor(characterManager.UIManager.DirCursor, 2f);
-            }
-        }
-        
-        if (Input.GetMouseButtonUp(0))
-        {
-            if (isLocating)
+
+            if (Input.GetMouseButtonUp(0))
             {
                 LocateAtPos();
-                
             }
-            else if (isRotating)
+        }
+        else if (isRotating)
+        {
+            if (Input.GetMouseButton(0))
+            {
+                if (!isRotated)
+                {
+                    UpdateCharPosToCursor(characterManager.UIManager.DirCursor, 2f);                }
+            }
+
+            if (Input.GetMouseButtonUp(0))
             {
                 SetDirection();
             }
@@ -60,7 +76,7 @@ public class CharacterController : MonoBehaviour
     // 캐릭터 배치 플로우 시작 함수
     private void StartCharacterPlaceInStage()
     {
-        characterManager.ChangeState(CharState.Wait);
+        characterManager.CurState = CharState.Wait;
         StartLocateAtPos();
     }
 
@@ -92,7 +108,6 @@ public class CharacterController : MonoBehaviour
         else
         {
             isLocated = true;
-            
             StartSetDirection();
         }
     }
@@ -110,21 +125,27 @@ public class CharacterController : MonoBehaviour
     // 캐릭터 방향 설정 종료
     private void SetDirection()
     {
-        isRotating = false;
+        if (!isCanRotated)
+        {
+            characterManager.UIManager.DirCursor.
+                transform.position = transform.position + (Vector3.up * 0.2f);
+        }
+        else
+        {
+            isRotating = false;
+            isRotated = true;
+            
+            // 시간 원래대로
+            // ~
+            
+            characterManager.UIManager.SetActiveDirSetCanvas(false); // 방향 설정 UI Off
+            characterManager.UIManager.SetActiveProfileButtton(false); // profile UI Off
+            characterManager.UIManager.SetActiveStatusBars(true); // status UI On
         
-        // 방향 설정 UI Off
-        characterManager.UIManager.SetActiveDirSetCanvas(false);
-        // status UI On
-        characterManager.UIManager.SetActiveStatusBars(true);
-  
-        // temp code
-        //isRotated = true;
-
-        // 시간 원래대로
-        // ~
-
-        // 소환 애니메이션
-        //animController.SetTrigger("Start");
+            // 활성화
+            characterManager.CurState = CharState.Idle;
+            //animController.SetTrigger("Start");
+        }
     }
     
     
@@ -158,14 +179,21 @@ public class CharacterController : MonoBehaviour
 
             Vector3 originPos = transform.position;
             float tempLen = Vector2.Distance(originPos, pos);
-            if (tempLen <= length)
+            if (tempLen < length)
             {
                 obj.transform.position = pos;
+                
+                isCanRotated = false;
+                characterManager.UIManager.SetActiveCursorDirArrowSet(false);
+                characterManager.UIManager.SetActiveCharDirArrowSet(false);
             }
             else
             {
                 Vector3 direction = (pos - originPos).normalized;  // 방향 벡터 계산
-                obj.transform.position = originPos + direction * length;  
+                obj.transform.position = originPos + direction * length;
+                
+                isCanRotated = true;
+                JudgeCharDirection(direction);
             }
         }
     }
@@ -187,5 +215,37 @@ public class CharacterController : MonoBehaviour
 
         isCanLocated = false;
         return mousePos;
+    }
+    
+    // 방향에 따른 ui 활성화
+    private void JudgeCharDirection(Vector3 dir)
+    {
+        characterManager.UIManager.SetActiveCursorDirArrowSet(true);
+        characterManager.UIManager.SetActiveCharDirArrowSet(true);
+        
+        if (dir.x >= 0.8f)
+        {
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Right);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Right);
+            gameObject.transform.GetChild(0).
+                transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
+        }
+        else if (dir.x <= -0.8f)
+        {
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Left);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Left);
+            gameObject.transform.GetChild(0).
+                transform.localScale = new Vector3(-0.25f, 0.25f, 0.25f);
+        }
+        else if (dir.y >= 0.8f)
+        {
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Up);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Up);
+        }
+        else if (dir.y <= -0.8f)
+        {
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Down);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Down);
+        }
     }
 }

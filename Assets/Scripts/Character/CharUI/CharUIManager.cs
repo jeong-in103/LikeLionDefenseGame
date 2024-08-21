@@ -33,9 +33,13 @@ public class CharUIManager : MonoBehaviour
     
     [SerializeField] private GameObject charDirArrowSet;
     [SerializeField] private List<GameObject> charDirArrows;
+    
+    public CharProfileButton charProfileBtn { get; private set; }
 
-    public void InitUIController()
+    public void InitUIController(CharProfileButton profileButton)
     {
+        charProfileBtn = profileButton;
+        
         // 캐싱
         statusCanvas = GameObject.Find("CharCanvas").GetComponent<Canvas>();
         dirSetCanvas = GameObject.Find("DirSetCanvas").GetComponent<Canvas>();
@@ -67,6 +71,11 @@ public class CharUIManager : MonoBehaviour
         
         SetActiveStatusCanvas(false);
         SetActiveDirSetCanvas(false);
+    }
+
+    public void SetActiveProfileButtton(bool active)
+    {
+        charProfileBtn.gameObject.SetActive(active);
     }
 
     public void SetActiveStatusCanvas(bool active)

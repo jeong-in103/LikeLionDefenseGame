@@ -87,12 +87,12 @@ GameObject:
   - component: {fileID: 8038593568637530558}
   - component: {fileID: 9222417768765604707}
   m_Layer: 7
-  m_Name: Left
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1628115420309575797
 RectTransform:
   m_ObjectHideFlags: 0
@@ -790,7 +790,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &453148633760739001
 RectTransform:
   m_ObjectHideFlags: 0
@@ -860,7 +860,7 @@ GameObject:
   - component: {fileID: 2872901941275559229}
   - component: {fileID: 8172486483970678194}
   m_Layer: 7
-  m_Name: Right
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1849,7 +1849,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2800075188082215073
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1922,7 +1922,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7621461773946813472
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1935,8 +1935,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 5085265330897463662}
   - {fileID: 1628115420309575797}
+  - {fileID: 5085265330897463662}
   - {fileID: 453148633760739001}
   - {fileID: 2800075188082215073}
   m_Father: {fileID: 5942465371274336547}

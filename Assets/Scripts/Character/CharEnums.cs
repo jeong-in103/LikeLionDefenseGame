@@ -15,7 +15,6 @@ public enum CharClass
 public enum CharState
 {
     Wait,
-    Start,
     Idle,
     Attack,
     Die

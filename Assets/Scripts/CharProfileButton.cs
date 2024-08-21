@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.Networking;
 using UnityEngine.UI;
 
-public class CharProfileButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class CharProfileButton : MonoBehaviour, IPointerDownHandler
 {
     private Button button;
     private Image charBtnIcon;
@@ -21,23 +21,16 @@ public class CharProfileButton : MonoBehaviour, IPointerDownHandler, IPointerUpH
         charBtnIcon = button.gameObject.GetComponent<Image>();
 
         onButtonDown = new UnityEvent();
-        onButtonUp = new UnityEvent();
     }
 
-    public void InitCharBtn(Sprite sprite, int id, UnityAction<int> action)
+    public void InitCharBtn(Sprite sprite, int id)
     {
         charBtnIcon.sprite = sprite;
-        onButtonDown.AddListener(() => action(id));
-        onButtonUp.AddListener(() => gameObject.SetActive(false));
+        onButtonDown.AddListener(() => StageManager.Instance.ActiveCharObjById(id));
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
         onButtonDown.Invoke();
-    }
-
-    public void OnPointerUp(PointerEventData eventData)
-    {
-        onButtonUp.Invoke();
     }
 }

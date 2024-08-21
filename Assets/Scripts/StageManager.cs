@@ -1,11 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
+    public static StageManager Instance { get; set; }
+    
     // 게임 정보
     [Header("Game Info")] 
     [SerializeField] private int maxEnemyNum;
@@ -25,10 +28,15 @@ public class StageManager : MonoBehaviour
 
     [Space] 
     // 캐릭터 프로필 UI
-    [SerializeField] private List<GameObject> charProfileObj; // 초기화 할때만 사용
+    [SerializeField] private List<GameObject> charProfileObj;
     private List<CharProfileButton> charProfileBtn;
     // 캐릭터 매니져
     private Dictionary<int, CharacterManager> characterDictionary;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -59,30 +67,26 @@ public class StageManager : MonoBehaviour
             
             // 캐릭터 UI 초기화
             charProfileObj[i].SetActive(true);
-            charProfileBtn[i].InitCharBtn(temp.CharStatus.CharProfileImage, temp.CharId, ActiveCharObjById);
+            charProfileBtn[i].InitCharBtn(temp.CharStatus.CharProfileImage, temp.CharId);
             
             // 캐릭터 초기화
-            temp.InitCharacter();
+            temp.InitCharacter(charProfileBtn[i]);
             temp.gameObject.SetActive(false);
             
             characterDictionary.Add(temp.CharId, temp);
         }
     }
 
-    private void ActiveCharObjById(int id)
+    public void ActiveCharObjById(int id)
     {
         if (characterDictionary.TryGetValue(id, out var temp))
         {
-            temp.gameObject.SetActive(true);
             temp.SetActiveEvent();
         }
         else
+        {
             Debug.LogWarning("is no GameManager matching that Id");
-    }
-    
-    private void LocateCharInPosition()
-    {
-        
+        }
     }
 
     public void TimeSlowDown()

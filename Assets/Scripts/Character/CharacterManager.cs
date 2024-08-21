@@ -59,11 +59,7 @@ public class CharacterManager : MonoBehaviour
     #endregion
     
     // 캐릭터 상태
-    private CharState curState = CharState.Idle;
-    public void ChangeState(CharState newState)
-    {
-        curState = newState;
-    }
+    public CharState CurState { get; set; }
 
     // 캐릭터가 위치한 노드
     public Node CharPlacedNode { get; set; }  
@@ -95,13 +91,14 @@ public class CharacterManager : MonoBehaviour
         OnCharacterLocated = new UnityEvent();
     }
     
-    public void InitCharacter()
+    public void InitCharacter(CharProfileButton profileButton)
     {
-        UIManager.InitUIController();
+        UIManager.InitUIController(profileButton);
     }
 
     public void SetActiveEvent()
     {
+        gameObject.SetActive(true);
         OnCharacterLocated.Invoke();
     }
     
