@@ -75,7 +75,7 @@ public class CharUIManager : MonoBehaviour
 
     public void SetActiveProfileButtton(bool active)
     {
-        charProfileBtn.gameObject.SetActive(active);
+        charProfileBtn.transform.parent.gameObject.SetActive(active);
     }
 
     public void SetActiveStatusCanvas(bool active)
