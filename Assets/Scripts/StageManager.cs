@@ -33,6 +33,8 @@ public class StageManager : MonoBehaviour
     // 캐릭터 매니져
     private Dictionary<int, CharacterManager> characterDictionary;
 
+    public bool isLocating = false;
+
     private void Awake()
     {
         Instance = this;
@@ -82,9 +84,11 @@ public class StageManager : MonoBehaviour
         if (characterDictionary.TryGetValue(id, out var temp))
         {
             temp.SetActiveEvent();
+            isLocating = true;
         }
         else
         {
+            isLocating = false;
             Debug.LogWarning("is no GameManager matching that Id");
         }
     }

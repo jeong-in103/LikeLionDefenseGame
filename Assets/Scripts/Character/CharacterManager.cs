@@ -13,6 +13,8 @@ public class CharacterManager : MonoBehaviour
     [field: SerializeField] public CharStatus CharStatus { get; private set; }
     
     #region status property
+
+    private readonly bool[,] attackRange = new bool[3, 3];
     
     private float curHp;
     public float HP
@@ -64,6 +66,8 @@ public class CharacterManager : MonoBehaviour
     // 캐릭터가 위치한 노드
     public Node CharPlacedNode { get; set; }  
     
+    public List<Node> CharAttackableNodes { get; set; }
+    
     //캐릭터 애님컨트롤러
     private CharAnimController animController;
     
@@ -79,7 +83,16 @@ public class CharacterManager : MonoBehaviour
         
         animController = GetComponentInChildren<CharAnimController>();
         UIManager = GetComponent<CharUIManager>();
-
+        
+        // attack range init
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                attackRange[i, j] = CharStatus.attackRange[i + j];
+            }
+        }
+        
         // status init
         HP = CharStatus.maxHp;
         SP = CharStatus.maxSp;
@@ -100,6 +113,11 @@ public class CharacterManager : MonoBehaviour
     {
         gameObject.SetActive(true);
         OnCharacterLocated.Invoke();
+    }
+
+    public void SetActiveAttackRange(ArrowDir dir)
+    {
+        CharAttackableNodes = AstarGrid.Instance.SetActiveAttackRange(CharPlacedNode, attackRange, dir);
     }
     
     private void Attack()

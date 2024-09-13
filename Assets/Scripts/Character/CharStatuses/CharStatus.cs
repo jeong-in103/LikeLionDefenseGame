@@ -17,11 +17,16 @@ public class CharStatus : ScriptableObject
     public float atk;
     public float def;
     public float atkSpeed;
+
+    [Space] 
+    public bool[] attackRange = new bool[9];
     
     [Space]
     public int blockAbleNumber;       // 저지 가능한 몹 수
     public int requiredCost;          // 배치 시 필요 코스트
     public float locatedCoolTime;     // 재배치 쿨타임
+    
+    
 
     /*
     private float damage;

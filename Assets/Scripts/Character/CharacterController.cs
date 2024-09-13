@@ -17,6 +17,8 @@ public class CharacterController : MonoBehaviour
     private bool isRotating = false;
     private bool isCanRotated = false;
     private bool isRotated = false;
+
+    private ArrowDir charDir = ArrowDir.Right;
     
     // 캐싱
     private Camera mainCamera;
@@ -103,6 +105,7 @@ public class CharacterController : MonoBehaviour
         
         if (!isCanLocated)
         {
+            StageManager.Instance.isLocating = false;
             gameObject.SetActive(false);
         }
         else
@@ -116,6 +119,7 @@ public class CharacterController : MonoBehaviour
     private void StartSetDirection()
     {
         isRotating = true;
+        AstarGrid.Instance.SetActiveFalseAllAttackRange();
         
         // 방향 설정 UI On
         characterManager.UIManager.SetActiveStatusCanvas(true);
@@ -125,6 +129,8 @@ public class CharacterController : MonoBehaviour
     // 캐릭터 방향 설정 종료
     private void SetDirection()
     {
+        AstarGrid.Instance.SetActiveFalseAllAttackRange();
+        
         if (!isCanRotated)
         {
             characterManager.UIManager.DirCursor.
@@ -145,9 +151,10 @@ public class CharacterController : MonoBehaviour
             // 활성화
             characterManager.CurState = CharState.Idle;
             //animController.SetTrigger("Start");
+
+            StageManager.Instance.isLocating = false;
         }
     }
-    
     
     // 마우스 커서를 쫒는 함수
     private void UpdateCharPosToCursor(GameObject obj)
@@ -178,22 +185,26 @@ public class CharacterController : MonoBehaviour
             pos.z = 0f;
 
             Vector3 originPos = transform.position;
+            
+            obj.transform.position = pos;
+            Vector3 direction = (pos - originPos).normalized;
             float tempLen = Vector2.Distance(originPos, pos);
-            if (tempLen < length)
+            if (tempLen < length - 1f)
             {
-                obj.transform.position = pos;
-                
                 isCanRotated = false;
                 characterManager.UIManager.SetActiveCursorDirArrowSet(false);
                 characterManager.UIManager.SetActiveCharDirArrowSet(false);
+                AstarGrid.Instance.SetActiveFalseAllAttackRange();
+            }
+            else if (tempLen >= length)
+            {
+                obj.transform.position = originPos + direction * length;
             }
             else
             {
-                Vector3 direction = (pos - originPos).normalized;  // 방향 벡터 계산
-                obj.transform.position = originPos + direction * length;
-                
                 isCanRotated = true;
                 JudgeCharDirection(direction);
+                characterManager.SetActiveAttackRange(charDir);
             }
         }
     }
@@ -209,10 +220,13 @@ public class CharacterController : MonoBehaviour
             if (distance < 0.5f)
             {
                 isCanLocated = true;
+                characterManager.CharPlacedNode = node;
+                characterManager.SetActiveAttackRange(charDir);
                 return node.WorldPos;
             }
         }
 
+        AstarGrid.Instance.SetActiveFalseAllAttackRange();
         isCanLocated = false;
         return mousePos;
     }
@@ -225,27 +239,31 @@ public class CharacterController : MonoBehaviour
         
         if (dir.x >= 0.8f)
         {
-            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Right);
-            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Right);
+            charDir = ArrowDir.Right;
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(charDir);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(charDir);
             gameObject.transform.GetChild(0).
                 transform.localScale = new Vector3(0.25f, 0.25f, 0.25f);
         }
         else if (dir.x <= -0.8f)
         {
-            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Left);
-            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Left);
+            charDir = ArrowDir.Left;
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(charDir);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(charDir);
             gameObject.transform.GetChild(0).
                 transform.localScale = new Vector3(-0.25f, 0.25f, 0.25f);
         }
         else if (dir.y >= 0.8f)
         {
-            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Up);
-            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Up);
+            charDir = ArrowDir.Up;
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(charDir);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(charDir);
         }
         else if (dir.y <= -0.8f)
         {
-            characterManager.UIManager.SetActiveTrueCursorDirArrow(ArrowDir.Down);
-            characterManager.UIManager.SetActiveTrueCharDirArrow(ArrowDir.Down);
+            charDir = ArrowDir.Down;
+            characterManager.UIManager.SetActiveTrueCursorDirArrow(charDir);
+            characterManager.UIManager.SetActiveTrueCharDirArrow(charDir);
         }
     }
 }

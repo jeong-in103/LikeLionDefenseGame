@@ -15,8 +15,8 @@ public class AstarGrid : MonoBehaviour
     [Header("Grid info")]
     [SerializeField] private int xSize; // 열
     [SerializeField] private int ySize; // 행
-    [SerializeField] private Node startNode;
-    [SerializeField] private Node endNode;
+    [SerializeField] private GameObject startNode;
+    [SerializeField] private GameObject endNode;
     [SerializeField] private Node[] nodes;
     
     private Node[,] grid;
@@ -37,7 +37,8 @@ public class AstarGrid : MonoBehaviour
             for (int column = 0; column < xSize; ++column)
             {
                 grid[row, column] = nodes[row * 7 + column];
-                grid[row, column].gameObject.SetActive(false);
+                grid[row, column].highlight.gameObject.SetActive(false);
+                grid[row, column].range.gameObject.SetActive(false);
             }
         }
 
@@ -81,14 +82,14 @@ public class AstarGrid : MonoBehaviour
         {
             foreach (var node in WalkableNodes)
             {
-                node.gameObject.SetActive(active);
+                node.highlight.gameObject.SetActive(active);
             }
         }
         else
         {
             foreach (var node in WalkUnableNodes)
             {
-                node.gameObject.SetActive(active);
+                node.highlight.gameObject.SetActive(active);
             }
         }
     }
@@ -103,5 +104,92 @@ public class AstarGrid : MonoBehaviour
         {
             return WalkUnableNodes;
         }
+    }
+
+    public void SetActiveFalseAllAttackRange()
+    {
+        foreach (var node in grid)
+        {
+            node.range.SetActive(false);
+        }
+    }
+
+    public List<Node> SetActiveAttackRange(Node charPos, bool[,] attackRange, ArrowDir dir)
+    {
+        foreach (var node in grid)
+        {
+            node.range.SetActive(false);
+        }
+        
+        int charNodeX = 0;
+        int charNodeY = 0;
+        for (int i = 0; i < ySize; ++i)
+        {
+            for (int j = 0; j < xSize; ++j)
+            {
+                if (grid[i, j] == charPos)
+                {
+                    charNodeX = i;
+                    charNodeY = j;
+                }
+            }
+        }
+
+        Node[][] allRange = new Node[3][];
+        for (int index = 0; index < 3; index++)
+        {
+            allRange[index] = new Node[3];
+        }
+    
+        for (int i = 0; i < 3; i++)
+        {
+            for (int j = 0; j < 3; j++)
+            {
+                int x = charNodeX - 1 + i; // 중심점으로부터 x 좌표
+                int y = charNodeY - 1 + j; // 중심점으로부터 y 좌표
+                
+                if (dir == ArrowDir.Right)
+                {
+                    y = charNodeY + j;
+                }
+                else if (dir == ArrowDir.Left)
+                {
+                    y = charNodeY - 2 + j;
+                }
+                else if (dir == ArrowDir.Up)
+                {
+                    x = charNodeX - 2 + i;
+                }
+                else
+                {
+                    x = charNodeX + i;
+                }
+
+                // 범위를 벗어나는 경우 처리 (여기서는 -1로 표시)
+                if (x >= 0 && x < grid.GetLength(0) && y >= 0 && y < grid.GetLength(1))
+                {
+                    allRange[i][j] = grid[x, y];
+                }
+                else
+                {
+                    allRange[i][j] = null; // 범위를 벗어난 경우를 위한 값
+                }
+            }
+        }
+
+        List<Node> attackableNodse = new List<Node>();
+        for (int i = 0; i < 3; ++i)
+        {
+            for (int j = 0; j < 3; ++j)
+            {
+                if (allRange[i][j] && attackRange[i, j])
+                {
+                    attackableNodse.Add(allRange[i][j]);
+                    allRange[i][j].range.SetActive(true);
+                }
+            }
+        }
+
+        return attackableNodse;
     }
 }

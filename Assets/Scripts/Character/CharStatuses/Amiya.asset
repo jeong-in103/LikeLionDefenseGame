@@ -20,6 +20,7 @@ MonoBehaviour:
   atk: 0
   def: 0
   atkSpeed: 0
+  attackRange: 010101010101010101
   blockAbleNumber: 0
   requiredCost: 0
   locatedCoolTime: 0
